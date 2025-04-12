@@ -28,7 +28,7 @@ export default function LoginForm() {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             if (userCredential.user) {
-                router.push('/sunbox'); 
+                router.push('/sunbox');
             }
         } catch (error: any) {
             console.error(error);
@@ -42,15 +42,6 @@ export default function LoginForm() {
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleForgotPassword = async () => {
-        // For admin-only systems, typically handle password resets through direct admin contact
-        Alert.alert(
-            "Password Reset",
-            "Please contact the system administrator to reset your password.",
-            [{ text: "OK" }]
-        );
     };
 
     return (
@@ -68,7 +59,6 @@ export default function LoginForm() {
                 autoCapitalize="none"
                 keyboardType="email-address"
             />
-
             <TextInput
                 style={[styles.input, { color: textColor, borderColor: placeholderColor }]}
                 placeholder="Password"
@@ -78,15 +68,6 @@ export default function LoginForm() {
                 secureTextEntry
             />
 
-            <View style={styles.forgotPasswordContainer}>
-                <Text
-                    style={[styles.forgotPassword, { color: placeholderColor }]}
-                    onPress={handleForgotPassword}
-                >
-                    Forgot password?
-                </Text>
-            </View>
-
             <View style={styles.buttonContainer}>
                 {loading ? (
                     <ActivityIndicator size="small" color="#0000ff" />
@@ -94,10 +75,6 @@ export default function LoginForm() {
                     <Button title="Login" onPress={handleLogin} />
                 )}
             </View>
-
-            <Text style={[styles.adminNote, { color: placeholderColor }]}>
-                This login is restricted to authorized administrators only.
-            </Text>
         </View>
     );
 }
