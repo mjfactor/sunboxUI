@@ -18,13 +18,10 @@ const AmountCard = () => {
 
 const styles = StyleSheet.create({
   card: {
-    width: 358,
-    height: 107,
+    width: "100%", // Make it responsive instead of fixed width
+    minHeight: 107,
     borderRadius: 9,
-    paddingTop: 14,
-    paddingRight: 17,
-    paddingBottom: 14,
-    paddingLeft: 17,
+    padding: 17, // Simplified padding
     backgroundColor: "#eeb062",
     shadowColor: "#000",
     shadowOffset: {

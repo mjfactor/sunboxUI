@@ -3,14 +3,14 @@ import { View, Text, StyleSheet } from "react-native";
 import { EnergyIcon, TemperatureIcon, HumidityIcon } from "./icon/CustomIcons";
 import MetricDisplay from "./MetricDisplay";
 import { getDatabase, ref, onValue, query, limitToLast } from "firebase/database";
-import { firebaseApp } from "./firebase-config";
+import { app } from "@/lib/firebase";
 
 const EnergySection = () => {
   const [temperature, setTemperature] = useState("--");
   const [humidity, setHumidity] = useState("--");
 
   useEffect(() => {
-    const db = getDatabase(firebaseApp);
+    const db = getDatabase(app);
 
     // Get today's date (YYYY-MM-DD format)
     const today = new Date().toISOString().split("T")[0]; // "2025-03-06"
@@ -20,8 +20,16 @@ const EnergySection = () => {
 
     onValue(dataRef, (snapshot) => {
       if (snapshot.exists()) {
-        const data = Object.values(snapshot.val())[0]; // Get latest entry
-        console.log("Firebase Data:", data); // Debugging
+        const dataValues = Object.values(snapshot.val())[0]; // Get latest entry
+        console.log("Firebase Data:", dataValues); // Debugging
+
+        // Type assertion for the data from Firebase
+        interface SensorData {
+          temperature?: number;
+          humidity?: number;
+        }
+
+        const data = dataValues as SensorData;
         setTemperature(data.temperature ? `${data.temperature} °C` : "--");
         setHumidity(data.humidity ? `${data.humidity}%` : "--");
       } else {
@@ -48,16 +56,19 @@ const EnergySection = () => {
 const styles = StyleSheet.create({
   container: {
     display: "flex",
-    gap: 9,
+    width: "100%", // Make it responsive
+    gap: 12, // Slightly increased gap for better spacing
   },
   energyDisplay: {
-    width: 159,
+    width: "100%", // Make it responsive
+    maxWidth: 200, // Limit maximum width
     height: 116,
     borderRadius: 9,
     backgroundColor: "#1B1B1D",
     display: "flex",
     alignItems: "center",
     paddingVertical: 15,
+    alignSelf: "center", // Center the component
   },
   energyValue: {
     fontSize: 41,
